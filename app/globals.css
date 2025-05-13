@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+
+    --primary: 0 0% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 15%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Apply monospace font to specific elements */
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Apply monospace to vector values */
+  .vector-value {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Improved tooltip styles */
+.tooltip-box {
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.2s ease;
+}
+
+/* Improved vector label styles */
+.vector-label {
+  transition: all 0.2s ease;
+}
+
+/* Enhanced animation for draggable elements */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Improved font rendering for mathematical expressions */
+.vector-value,
+.math-expression {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Subtle hover effects for interactive elements */
+.interactive-element {
+  transition: all 0.15s ease;
+}
+.interactive-element:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+/* Support for z-index in SVG elements */
+.vector-canvas {
+  isolation: isolate;
+}
+
+.vector-canvas g {
+  position: relative;
+}
+
+/* Ensure vector details appear above other elements when active */
+.vector-details-active {
+  filter: drop-shadow(0px 3px 8px rgba(0, 0, 0, 0.15));
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* Smooth transitions for vector elements */
+.vector-label,
+.vector-details {
+  transition: all 0.2s ease;
+}
+
+/* Add proper SVG layering */
+.vector-active {
+  z-index: 100;
+}
+
+/* Make sure SVG elements respect z-index */
+svg * {
+  transition: all 0.15s ease;
+}
