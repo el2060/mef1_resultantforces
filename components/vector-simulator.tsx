@@ -169,7 +169,7 @@ export default function VectorSimulator() {
 
   // Add these state variables after the other state declarations
   const [showDetailedCalculations, setShowDetailedCalculations] = useState(false)
-  const [showResultant, setShowResultant] = useState(true)
+  const [showResultant, setShowResultant] = useState(false)
 
   // Active vector id for proper z-index ordering
   const [activeVectorId, setActiveVectorId] = useState<number | null>(null)
@@ -1429,9 +1429,25 @@ export default function VectorSimulator() {
 
         {/* Component formula toggle */}
         <div className="flex justify-between mt-2">
-          <Button variant="outline" size="sm" onClick={() => setShowResultant(!showResultant)} className="text-xs h-7">
-            {showResultant ? "Hide Resultant" : "Show Resultant"}
-          </Button>
+          {/* Replace this button:
+<Button variant="outline" size="sm" onClick={() => setShowResultant(!showResultant)} className="text-xs h-7">
+  {showResultant ? "Hide Resultant" : "Show Resultant"}
+</Button>
+*/}
+
+          {/* With this checkbox: */}
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="show-resultant"
+              checked={showResultant}
+              onChange={() => setShowResultant(!showResultant)}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+            />
+            <label htmlFor="show-resultant" className="text-xs text-gray-700">
+              Show resultant force arrow
+            </label>
+          </div>
           <Button
             variant="outline"
             size="sm"
