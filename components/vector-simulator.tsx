@@ -1360,7 +1360,7 @@ export default function VectorSimulator() {
                         x={vector.endX + 20}
                         y={vector.startY}
                         fontSize="12"
-                        fill="#333"
+                        fill={vector.color}
                         dominantBaseline="middle"
                         fontFamily="var(--font-mono)"
                         fontWeight="bold"
@@ -1391,7 +1391,7 @@ export default function VectorSimulator() {
                         x={vector.endX + 20}
                         y={vector.endY + 30}
                         fontSize="12"
-                        fill="#333"
+                        fill={vector.color}
                         dominantBaseline="middle"
                         fontFamily="var(--font-mono)"
                         fontWeight="bold"
@@ -1426,17 +1426,17 @@ export default function VectorSimulator() {
                         x={vector.endX + 20}
                         y={vector.endY - 10}
                         fontSize="12"
-                        fill="#333"
+                        fill={vector.color}
                         fontFamily="var(--font-mono)"
                         fontWeight="bold"
                       >
                         <tspan x={vector.endX + 20} dy="0">
                           Components of F{vector.id},
                         </tspan>
-                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal">
+                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal" fill={vector.color}>
                           {component?.xComponentFormula || ""}
                         </tspan>
-                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal">
+                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal" fill={vector.color}>
                           {component?.yComponentFormula || ""}
                         </tspan>
                       </text>
@@ -2035,8 +2035,10 @@ export default function VectorSimulator() {
                             <div className="pl-3 text-xs space-y-1">
                               {vectorComponents.map((comp) => (
                                 <div key={comp.id} className="flex items-center">
+                                  {/* Replace the green and red dots in the x-components section with the actual vector colors */}
                                   <div
-                                    className={`w-2 h-2 rounded-full mr-1 ${comp.x >= 0 ? "bg-green-500" : "bg-red-500"}`}
+                                    className="w-2 h-2 rounded-full mr-1"
+                                    style={{ backgroundColor: vectors.find((v) => v.id === comp.id)?.color }}
                                   ></div>
                                   <span style={{ color: vectors.find((v) => v.id === comp.id)?.color }}>
                                     F{comp.id}
@@ -2065,8 +2067,10 @@ export default function VectorSimulator() {
                             <div className="pl-3 text-xs space-y-1">
                               {vectorComponents.map((comp) => (
                                 <div key={comp.id} className="flex items-center">
+                                  {/* Similarly, replace the green and red dots in the y-components section */}
                                   <div
-                                    className={`w-2 h-2 rounded-full mr-1 ${comp.y >= 0 ? "bg-green-500" : "bg-red-500"}`}
+                                    className="w-2 h-2 rounded-full mr-1"
+                                    style={{ backgroundColor: vectors.find((v) => v.id === comp.id)?.color }}
                                   ></div>
                                   <span style={{ color: vectors.find((v) => v.id === comp.id)?.color }}>
                                     F{comp.id}
