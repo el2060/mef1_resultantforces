@@ -185,7 +185,7 @@ export default function VectorSimulator() {
   // Calculate individual vector components
   const vectorComponents = vectors.map((vector) => {
     const dx = vector.endX - vector.startX
-    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward
+    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward (upward is positive)
 
     // Calculate magnitude and angle
     const magnitude = Math.sqrt(dx * dx + dy * dy)
@@ -205,7 +205,7 @@ export default function VectorSimulator() {
       }
     }
 
-    // Determine direction indicators
+    // Determine direction indicators - ensure upward is positive, downward is negative
     const xDirection = dx >= 0 ? "→" : "←"
     const yDirection = dy >= 0 ? "↑" : "↓"
 
@@ -219,10 +219,14 @@ export default function VectorSimulator() {
     let xComponentFormula = ""
     let yComponentFormula = ""
 
+    // For x-component, positive is right (→), negative is left (←)
+    // For y-component, positive is up (↑), negative is down (↓)
     if (vector.angleReference === "x") {
+      // When measured from x-axis
       xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       yComponentFormula = `${dy >= 0 ? "+" : "-"} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
     } else {
+      // When measured from y-axis
       xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       yComponentFormula = `${dy >= 0 ? "+" : "-"} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
     }
@@ -247,50 +251,6 @@ export default function VectorSimulator() {
           : `${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(dy)} N`,
       xComponentFormula,
       yComponentFormula,
-    }
-
-    // For F1 (assuming it's the first vector, id: 1)
-    if (vector.id === 1) {
-      // Override the calculated values with the specific ones from the image
-      return {
-        ...calculatedValues,
-        x: 60, // Changed from 192.42 to 60 as shown in your new image
-        y: 166, // Changed from 106.66 to 166 as shown in your new image
-        xDirection: "→",
-        yDirection: "↑",
-        xComponent: `60 N →`, // Removed decimal points
-        yComponent: `166 N ↑`, // Removed decimal points
-      }
-    }
-
-    // For F2 (id: 2)
-    if (vector.id === 2) {
-      return {
-        ...calculatedValues,
-        y: 102,
-        yDirection: "↑",
-        yComponent: `102 N ↑`,
-      }
-    }
-
-    // For F3 (id: 3)
-    if (vector.id === 3) {
-      return {
-        ...calculatedValues,
-        y: -91, // Negative because it's downward
-        yDirection: "↓",
-        yComponent: `91 N ↓`,
-      }
-    }
-
-    // For F4 (id: 4)
-    if (vector.id === 4) {
-      return {
-        ...calculatedValues,
-        y: -130, // Negative because it's downward
-        yDirection: "↓",
-        yComponent: `130 N ↓`,
-      }
     }
 
     return calculatedValues
@@ -2200,7 +2160,7 @@ function calculateResultantVector(vectors: Vector[]): ResultantVector {
 
   vectors.forEach((vector) => {
     const dx = vector.endX - vector.startX
-    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward
+    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward (upward is positive)
     totalX += dx
     totalY += dy
   })
