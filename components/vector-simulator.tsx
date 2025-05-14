@@ -31,6 +31,7 @@ import {
   ArrowUp,
   ChevronUp,
   ChevronDown,
+  Globe,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -189,7 +190,7 @@ export default function VectorSimulator() {
 
     // Calculate magnitude and angle
     const magnitude = Math.sqrt(dx * dx + dy * dy)
-    let angle = Math.atan2(-dy, dx) * (180 / Math.PI)
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI)
     angle = (angle < 0 ? angle + 360 : angle) % 360
 
     // Calculate angle from reference axis
@@ -243,12 +244,12 @@ export default function VectorSimulator() {
       // Calculate components using trigonometric functions
       xComponent:
         vector.angleReference === "x"
-          ? `${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(dx)} N`
-          : `${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(dx)} N`,
+          ? `${dx >= 0 ? "+" : "-"} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N ${xDirection}`
+          : `${dx >= 0 ? "+" : "-"} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N ${xDirection}`,
       yComponent:
         vector.angleReference === "x"
-          ? `${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(dy)} N`
-          : `${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(dy)} N`,
+          ? `${dy >= 0 ? "+" : "-"} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`
+          : `${dy >= 0 ? "+" : "-"} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`,
       xComponentFormula,
       yComponentFormula,
     }
@@ -2177,26 +2178,4 @@ function calculateResultantVector(vectors: Vector[]): ResultantVector {
     magnitude,
     angle,
   }
-}
-
-// Globe icon component
-function Globe(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  )
 }
