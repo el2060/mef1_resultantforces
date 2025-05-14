@@ -1238,43 +1238,10 @@ export default function VectorSimulator() {
                   {/* Arrow head */}
                   <ArrowHead x={vector.endX} y={vector.endY} angle={Math.atan2(dy, dx)} color={vector.color} />
 
-                  {/* Vector ID and magnitude label */}
+                  {/* Combined vector label with magnitude and angle */}
                   <g className={isActive ? "vector-details-active" : ""}>
-                    <rect
-                      x={midX - labelOffsetX - 30}
-                      y={midY - labelOffsetY - 12}
-                      width="60"
-                      height="24"
-                      rx="6"
-                      fill="white"
-                      fillOpacity="0.98"
-                      stroke={vector.color}
-                      strokeWidth={isActive ? 2 : 1.5}
-                      filter={
-                        isActive
-                          ? "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))"
-                          : "drop-shadow(0px 1px 2px rgba(0,0,0,0.05))"
-                      }
-                    />
-                    <text
-                      x={midX - labelOffsetX}
-                      y={midY - labelOffsetY}
-                      fontSize="13"
-                      fill={vector.color}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontWeight="bold"
-                      fontFamily="var(--font-mono)"
-                    >
-                      F{vector.id}: {Math.round(magnitude)} N
-                    </text>
-                  </g>
-
-                  {/* Angle label with background - now freely draggable */}
-                  <g className={isActive ? "vector-details-active" : ""}>
-                    {/* Calculate position for the angle label */}
                     {(() => {
-                      // Default position using angle and distance
+                      // Use the angle label position for the combined label
                       const angleLabelDistance = vector.angleLabelDistance || 1.5
                       const defaultX =
                         vector.startX + 30 * Math.cos((normalizedAngle * Math.PI) / 180) * angleLabelDistance
@@ -1282,17 +1249,20 @@ export default function VectorSimulator() {
                         vector.startY - 30 * Math.sin((normalizedAngle * Math.PI) / 180) * angleLabelDistance
 
                       // Use custom position if available, otherwise use default
-                      const angleLabelX = vector.angleLabelPosition?.x || defaultX
-                      const angleLabelY = vector.angleLabelPosition?.y || defaultY
+                      const labelX = vector.angleLabelPosition?.x || defaultX
+                      const labelY = vector.angleLabelPosition?.y || defaultY
+
+                      // Calculate width based on content
+                      const width = vector.angleReference === "x" ? 80 : 90
 
                       return (
                         <>
-                          {/* Angle label background */}
+                          {/* Combined label background */}
                           <rect
-                            x={angleLabelX - 30}
-                            y={angleLabelY - 12}
-                            width={vector.angleReference === "x" ? "60" : "70"}
-                            height="24"
+                            x={labelX - width / 2}
+                            y={labelY - 20}
+                            width={width}
+                            height="40"
                             rx="6"
                             fill="white"
                             fillOpacity="0.98"
@@ -1308,10 +1278,26 @@ export default function VectorSimulator() {
                             onMouseDown={(e) => handleAngleLabelMouseDown(e, vector.id)}
                           />
 
-                          {/* Angle label text */}
+                          {/* First line: Vector ID and magnitude */}
                           <text
-                            x={angleLabelX}
-                            y={angleLabelY}
+                            x={labelX}
+                            y={labelY - 8}
+                            fontSize="12"
+                            fill={vector.color}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            fontWeight="bold"
+                            cursor="move"
+                            fontFamily="var(--font-mono)"
+                            onMouseDown={(e) => handleAngleLabelMouseDown(e, vector.id)}
+                          >
+                            F{vector.id}: {Math.round(magnitude)} N
+                          </text>
+
+                          {/* Second line: Angle */}
+                          <text
+                            x={labelX}
+                            y={labelY + 8}
                             fontSize="12"
                             fill={vector.color}
                             textAnchor="middle"
@@ -1325,8 +1311,8 @@ export default function VectorSimulator() {
 
                           {/* Toggle reference button */}
                           <circle
-                            cx={angleLabelX + 25}
-                            cy={angleLabelY - 12}
+                            cx={labelX + width / 2 - 10}
+                            cy={labelY - 20}
                             r={4}
                             fill={vector.color}
                             opacity={0.7}
@@ -1334,8 +1320,8 @@ export default function VectorSimulator() {
                             cursor="pointer"
                           />
                           <text
-                            x={angleLabelX + 25}
-                            y={angleLabelY - 12}
+                            x={labelX + width / 2 - 10}
+                            y={labelY - 20}
                             fontSize="8"
                             fill="white"
                             textAnchor="middle"
