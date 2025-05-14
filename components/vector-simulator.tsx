@@ -1522,7 +1522,8 @@ export default function VectorSimulator() {
             <span className="text-purple-800 font-medium">Changing Angle Reference:</span>
           </div>
           <p className="text-purple-800">
-            To change angle from x/y axis, click on the x/y button in the top right of each vector's label box.
+            To change angle reference between x-axis and y-axis, click on the small colored circle with "x" or "y" in
+            the top corner of each vector's label box.
           </p>
         </div>
       </Card>
