@@ -1516,6 +1516,15 @@ export default function VectorSimulator() {
           </div>
           <p className="text-blue-800">Upward is positive (+Fy), downward is negative (-Fy).</p>
         </div>
+        <div className="mt-2 bg-purple-50 p-2 rounded-md border border-purple-200 text-xs">
+          <div className="flex items-center">
+            <Info className="w-3 h-3 mr-1 text-purple-500" />
+            <span className="text-purple-800 font-medium">Changing Angle Reference:</span>
+          </div>
+          <p className="text-purple-800">
+            To change angle from x/y axis, click on the x/y button in the top right of each vector's label box.
+          </p>
+        </div>
       </Card>
 
       {/* Results panel - now more compact with accordions */}
