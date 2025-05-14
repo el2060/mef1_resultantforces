@@ -186,11 +186,11 @@ export default function VectorSimulator() {
   // Calculate individual vector components
   const vectorComponents = vectors.map((vector) => {
     const dx = vector.endX - vector.startX
-    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward (upward is positive)
+    const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward
 
     // Calculate magnitude and angle
     const magnitude = Math.sqrt(dx * dx + dy * dy)
-    let angle = Math.atan2(dy, dx) * (180 / Math.PI)
+    let angle = Math.atan2(-dy, dx) * (180 / Math.PI)
     angle = (angle < 0 ? angle + 360 : angle) % 360
 
     // Calculate angle from reference axis
@@ -208,13 +208,17 @@ export default function VectorSimulator() {
 
     // Determine direction indicators - ensure upward is positive, downward is negative
     const xDirection = dx >= 0 ? "→" : "←"
-    const yDirection = dy >= 0 ? "↑" : "↓"
+    const yDirection = dy <= 0 ? "↑" : "↓" // Corrected: dy <= 0 means upward in SVG
 
     // Round values for display
     const magnitudeRounded = Math.round(magnitude)
     const angleFromRefRounded = Math.round(angleFromRef)
     const dxRounded = Math.round(Math.abs(dx))
     const dyRounded = Math.round(Math.abs(dy))
+
+    // Determine the sign for y-component based on direction
+    // In SVG, negative dy means upward, positive dy means downward
+    const ySign = dy <= 0 ? "+" : "-"
 
     // Format component calculations with proper signs and spacing
     let xComponentFormula = ""
@@ -225,17 +229,17 @@ export default function VectorSimulator() {
     if (vector.angleReference === "x") {
       // When measured from x-axis
       xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
-      yComponentFormula = `${dy >= 0 ? "+" : "-"} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
     } else {
       // When measured from y-axis
       xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
-      yComponentFormula = `${dy >= 0 ? "+" : "-"} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
     }
 
     const calculatedValues = {
       id: vector.id,
       x: dx,
-      y: dy,
+      y: -dy, // Invert y for calculations to match conventional coordinates
       magnitude,
       angle,
       angleFromRef,
@@ -248,8 +252,8 @@ export default function VectorSimulator() {
           : `${dx >= 0 ? "+" : "-"} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N ${xDirection}`,
       yComponent:
         vector.angleReference === "x"
-          ? `${dy >= 0 ? "+" : "-"} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`
-          : `${dy >= 0 ? "+" : "-"} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`,
+          ? `${ySign} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`
+          : `${ySign} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`,
       xComponentFormula,
       yComponentFormula,
     }
@@ -1068,7 +1072,7 @@ export default function VectorSimulator() {
 
               // Determine direction indicators
               const xDirection = dx >= 0 ? "→" : "←"
-              const yDirection = dy >= 0 ? "↑" : "↓"
+              const yDirection = dy <= 0 ? "↑" : "↓"
 
               // Check if vector is active (being dragged)
               const isVectorActive = vector.id === activeVectorId
@@ -1309,7 +1313,7 @@ export default function VectorSimulator() {
                         fontWeight="bold"
                       >
                         <tspan x={vector.endX + 20} dy="0">
-                          Fy = {dy >= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
+                          Fy = {dy <= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
                           {vector.angleReference === "x" ? "sin" : "cos"} {Math.round(angleFromRef)}° ={" "}
                           {Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N {yDirection}
                         </tspan>
@@ -1353,7 +1357,7 @@ export default function VectorSimulator() {
                           {Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N {xDirection}
                         </tspan>
                         <tspan x={vector.endX + 20} dy="22" fontWeight="normal">
-                          Fy = {dy >= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
+                          Fy = {dy <= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
                           {vector.angleReference === "x" ? "sin" : "cos"} {Math.round(angleFromRef)}° ={" "}
                           {Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N {yDirection}
                         </tspan>
@@ -1425,6 +1429,14 @@ export default function VectorSimulator() {
             <span className="text-yellow-800 font-medium">Reminder:</span>
           </div>
           <p className="text-yellow-800">Set your calculator to degree mode for this module.</p>
+        </div>
+
+        <div className="mt-2 bg-blue-50 p-2 rounded-md border border-blue-200 text-xs">
+          <div className="flex items-center">
+            <Compass className="w-3 h-3 mr-1 text-blue-500" />
+            <span className="text-blue-800 font-medium">Sign Convention:</span>
+          </div>
+          <p className="text-blue-800">Upward is positive (+Fy), downward is negative (-Fy).</p>
         </div>
       </Card>
 
