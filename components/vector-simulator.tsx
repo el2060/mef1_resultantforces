@@ -244,35 +244,35 @@ export default function VectorSimulator() {
       // When measured from x-axis
       if (quadrant === 1 || quadrant === 4) {
         // Right half-plane (positive x)
-        xComponentFormula = `${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+        xComponentFormula = `Fx = ${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       } else {
         // Left half-plane (negative x)
-        xComponentFormula = `${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+        xComponentFormula = `Fx = ${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       }
 
       if (quadrant === 1 || quadrant === 2) {
         // Upper half-plane (positive y)
-        yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
       } else {
         // Lower half-plane (negative y)
-        yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
       }
     } else {
       // When measured from y-axis
       if (quadrant === 1 || quadrant === 4) {
         // Right half-plane (positive x)
-        xComponentFormula = `${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+        xComponentFormula = `Fx = ${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       } else {
         // Left half-plane (negative x)
-        xComponentFormula = `${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+        xComponentFormula = `Fx = ${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
       }
 
       if (quadrant === 1 || quadrant === 2) {
         // Upper half-plane (positive y)
-        yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
       } else {
         // Lower half-plane (negative y)
-        yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} cos ${dyRounded} N ${yDirection}`
       }
     }
 
