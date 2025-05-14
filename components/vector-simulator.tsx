@@ -183,32 +183,48 @@ export default function VectorSimulator() {
   // Calculate resultant vector
   const resultantVector = calculateResultantVector(vectors)
 
-  // Calculate individual vector components
+  // Calculate individual vector components with accurate trigonometry
   const vectorComponents = vectors.map((vector) => {
+    // Calculate vector components in Cartesian coordinates
     const dx = vector.endX - vector.startX
     const dy = vector.startY - vector.endY // Invert Y because SVG Y increases downward
 
-    // Calculate magnitude and angle
+    // Calculate magnitude
     const magnitude = Math.sqrt(dx * dx + dy * dy)
-    let angle = Math.atan2(-dy, dx) * (180 / Math.PI)
+
+    // Calculate angle from positive x-axis (standard position)
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI)
+    // Normalize angle to 0-360 degrees
     angle = (angle < 0 ? angle + 360 : angle) % 360
 
-    // Calculate angle from reference axis
-    let angleFromRef = angle
-    if (vector.angleReference === "y") {
-      angleFromRef = (90 - angle + 360) % 360
-      if (angleFromRef > 90) angleFromRef = 360 - angleFromRef
+    // Determine quadrant (for reference)
+    let quadrant = 1
+    if (dx < 0 && dy >= 0) quadrant = 2
+    else if (dx < 0 && dy < 0) quadrant = 3
+    else if (dx >= 0 && dy < 0) quadrant = 4
+
+    // Calculate reference angle based on the specified reference axis
+    let angleFromRef = 0
+    if (vector.angleReference === "x") {
+      // Angle from x-axis
+      if (quadrant === 1) angleFromRef = angle
+      else if (quadrant === 2) angleFromRef = 180 - angle
+      else if (quadrant === 3) angleFromRef = angle - 180
+      else angleFromRef = 360 - angle
     } else {
-      if (angleFromRef > 90 && angleFromRef < 270) {
-        angleFromRef = 180 - angleFromRef
-      } else if (angleFromRef >= 270) {
-        angleFromRef = 360 - angleFromRef
-      }
+      // Angle from y-axis
+      if (quadrant === 1) angleFromRef = 90 - angle
+      else if (quadrant === 2) angleFromRef = angle - 90
+      else if (quadrant === 3) angleFromRef = 270 - angle
+      else angleFromRef = angle - 270
     }
 
-    // Determine direction indicators - ensure upward is positive, downward is negative
+    // Ensure angleFromRef is positive and less than 90 degrees
+    angleFromRef = Math.abs(angleFromRef % 90)
+
+    // Direction indicators
     const xDirection = dx >= 0 ? "→" : "←"
-    const yDirection = dy <= 0 ? "↑" : "↓" // Corrected: dy <= 0 means upward in SVG
+    const yDirection = dy >= 0 ? "↑" : "↓"
 
     // Round values for display
     const magnitudeRounded = Math.round(magnitude)
@@ -216,49 +232,65 @@ export default function VectorSimulator() {
     const dxRounded = Math.round(Math.abs(dx))
     const dyRounded = Math.round(Math.abs(dy))
 
-    // Determine the sign for y-component based on direction
-    // In SVG, negative dy means upward, positive dy means downward
-    const ySign = dy <= 0 ? "+" : "-"
+    // Determine signs for component formulas
+    const xSign = dx >= 0 ? "+" : "-"
+    const ySign = dy >= 0 ? "+" : "-"
 
-    // Format component calculations with proper signs and spacing
+    // Format component formulas based on reference axis and quadrant
     let xComponentFormula = ""
     let yComponentFormula = ""
 
-    // For x-component, positive is right (→), negative is left (←)
-    // For y-component, positive is up (↑), negative is down (↓)
     if (vector.angleReference === "x") {
       // When measured from x-axis
-      xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
-      yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      if (quadrant === 1 || quadrant === 4) {
+        // Right half-plane (positive x)
+        xComponentFormula = `${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+      } else {
+        // Left half-plane (negative x)
+        xComponentFormula = `${xSign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+      }
+
+      if (quadrant === 1 || quadrant === 2) {
+        // Upper half-plane (positive y)
+        yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      } else {
+        // Lower half-plane (negative y)
+        yComponentFormula = `${ySign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      }
     } else {
       // When measured from y-axis
-      xComponentFormula = `${dx >= 0 ? "+" : "-"} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
-      yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      if (quadrant === 1 || quadrant === 4) {
+        // Right half-plane (positive x)
+        xComponentFormula = `${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+      } else {
+        // Left half-plane (negative x)
+        xComponentFormula = `${xSign} ${magnitudeRounded} sin ${angleFromRefRounded}° = ${dxRounded} N ${xDirection}`
+      }
+
+      if (quadrant === 1 || quadrant === 2) {
+        // Upper half-plane (positive y)
+        yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      } else {
+        // Lower half-plane (negative y)
+        yComponentFormula = `${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
+      }
     }
 
-    const calculatedValues = {
+    return {
       id: vector.id,
       x: dx,
-      y: -dy, // Invert y for calculations to match conventional coordinates
+      y: dy,
       magnitude,
       angle,
       angleFromRef,
+      quadrant,
       xDirection,
       yDirection,
-      // Calculate components using trigonometric functions
-      xComponent:
-        vector.angleReference === "x"
-          ? `${dx >= 0 ? "+" : "-"} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N ${xDirection}`
-          : `${dx >= 0 ? "+" : "-"} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N ${xDirection}`,
-      yComponent:
-        vector.angleReference === "x"
-          ? `${ySign} ${Math.round(magnitude)} sin ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`
-          : `${ySign} ${Math.round(magnitude)} cos ${Math.round(angleFromRef)}° = ${Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N ${yDirection}`,
+      xComponent: xComponentFormula,
+      yComponent: yComponentFormula,
       xComponentFormula,
       yComponentFormula,
     }
-
-    return calculatedValues
   })
 
   // Add state for reflection prompt
@@ -802,6 +834,83 @@ export default function VectorSimulator() {
   // Get ordered vectors for rendering
   const orderedVectors = getVectorRenderOrder()
 
+  // Function to verify trigonometric calculations
+  const verifyTrigCalculations = () => {
+    // Test each vector's component calculations
+    const verificationResults = vectors.map((vector) => {
+      const dx = vector.endX - vector.startX
+      const dy = vector.startY - vector.endY
+      const magnitude = Math.sqrt(dx * dx + dy * dy)
+
+      // Get the component data for this vector
+      const component = vectorComponents.find((c) => c.id === vector.id)
+
+      if (!component) return null
+
+      // Extract the angle from reference
+      const angleFromRef = component.angleFromRef
+      const angleRadians = (angleFromRef * Math.PI) / 180
+
+      // Calculate expected components based on reference axis
+      let expectedX = 0
+      let expectedY = 0
+
+      if (vector.angleReference === "x") {
+        // From x-axis
+        if (dx >= 0) {
+          expectedX = magnitude * Math.cos(angleRadians)
+        } else {
+          expectedX = -magnitude * Math.cos(angleRadians)
+        }
+
+        if (dy >= 0) {
+          expectedY = magnitude * Math.sin(angleRadians)
+        } else {
+          expectedY = -magnitude * Math.sin(angleRadians)
+        }
+      } else {
+        // From y-axis
+        if (dx >= 0) {
+          expectedX = magnitude * Math.sin(angleRadians)
+        } else {
+          expectedX = -magnitude * Math.sin(angleRadians)
+        }
+
+        if (dy >= 0) {
+          expectedY = magnitude * Math.cos(angleRadians)
+        } else {
+          expectedY = -magnitude * Math.cos(angleRadians)
+        }
+      }
+
+      // Compare with actual values
+      const errorX = Math.abs(expectedX - dx)
+      const errorY = Math.abs(expectedY - dy)
+
+      return {
+        vectorId: vector.id,
+        quadrant: component.quadrant,
+        angleFromRef: Math.round(angleFromRef),
+        reference: vector.angleReference,
+        actualX: Math.round(dx),
+        actualY: Math.round(dy),
+        expectedX: Math.round(expectedX),
+        expectedY: Math.round(expectedY),
+        errorX: Math.round(errorX),
+        errorY: Math.round(errorY),
+        isAccurate: errorX < 1 && errorY < 1,
+      }
+    })
+
+    console.table(verificationResults)
+    return verificationResults
+  }
+
+  // Run verification on component mount
+  useEffect(() => {
+    verifyTrigCalculations()
+  }, [vectors])
+
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full max-w-7xl">
       {/* Vector visualization area - expanded to take more horizontal space */}
@@ -1043,18 +1152,9 @@ export default function VectorSimulator() {
               const angle = Math.atan2(-dy, dx) * (180 / Math.PI)
               const normalizedAngle = (angle < 0 ? angle + 360 : angle) % 360
 
-              // Calculate angle from reference axis
-              let angleFromRef = normalizedAngle
-              if (vector.angleReference === "y") {
-                angleFromRef = (90 - normalizedAngle + 360) % 360
-                if (angleFromRef > 90) angleFromRef = 360 - angleFromRef
-              } else {
-                if (angleFromRef > 90 && angleFromRef < 270) {
-                  angleFromRef = 180 - angleFromRef
-                } else if (angleFromRef >= 270) {
-                  angleFromRef = 360 - angleFromRef
-                }
-              }
+              // Get the component data for this vector
+              const component = vectorComponents.find((c) => c.id === vector.id)
+              const angleFromRef = component ? component.angleFromRef : 0
 
               // Calculate position for the magnitude label
               const midX = (vector.startX + vector.endX) / 2
@@ -1280,9 +1380,7 @@ export default function VectorSimulator() {
                         fontWeight="bold"
                       >
                         <tspan x={vector.endX + 20} dy="0">
-                          Fx = {dx >= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
-                          {vector.angleReference === "x" ? "cos" : "sin"} {Math.round(angleFromRef)}° ={" "}
-                          {Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N {xDirection}
+                          {component?.xComponentFormula || ""}
                         </tspan>
                       </text>
 
@@ -1313,9 +1411,7 @@ export default function VectorSimulator() {
                         fontWeight="bold"
                       >
                         <tspan x={vector.endX + 20} dy="0">
-                          Fy = {dy <= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
-                          {vector.angleReference === "x" ? "sin" : "cos"} {Math.round(angleFromRef)}° ={" "}
-                          {Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N {yDirection}
+                          {component?.yComponentFormula || ""}
                         </tspan>
                       </text>
                     </g>
@@ -1352,14 +1448,10 @@ export default function VectorSimulator() {
                           Components of F{vector.id},
                         </tspan>
                         <tspan x={vector.endX + 20} dy="22" fontWeight="normal">
-                          Fx = {dx >= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
-                          {vector.angleReference === "x" ? "cos" : "sin"} {Math.round(angleFromRef)}° ={" "}
-                          {Math.abs(dx) < 0.1 ? "0" : Math.round(Math.abs(dx))} N {xDirection}
+                          {component?.xComponentFormula || ""}
                         </tspan>
                         <tspan x={vector.endX + 20} dy="22" fontWeight="normal">
-                          Fy = {dy <= 0 ? "+" : "-"} {Math.round(magnitude)}{" "}
-                          {vector.angleReference === "x" ? "sin" : "cos"} {Math.round(angleFromRef)}° ={" "}
-                          {Math.abs(dy) < 0.1 ? "0" : Math.round(Math.abs(dy))} N {yDirection}
+                          {component?.yComponentFormula || ""}
                         </tspan>
                       </text>
                       <line
