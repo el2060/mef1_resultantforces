@@ -1514,7 +1514,10 @@ export default function VectorSimulator() {
             <Compass className="w-3 h-3 mr-1 text-blue-500" />
             <span className="text-blue-800 font-medium">Sign Convention:</span>
           </div>
-          <p className="text-blue-800">Upward is positive (+Fy), downward is negative (-Fy).</p>
+          <p className="text-blue-800">
+            Upward is positive (+Fy), downward is negative (-Fy). Right-hand side is positive (+Fx), left-hand side is
+            negative (-Fx).
+          </p>
         </div>
         <div className="mt-2 bg-purple-50 p-2 rounded-md border border-purple-200 text-xs">
           <div className="flex items-center">
@@ -1662,7 +1665,7 @@ export default function VectorSimulator() {
                           )}
                           {challenge.difficulty === "medium" && (
                             <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                              Med
+                              Medium
                             </Badge>
                           )}
                           {challenge.difficulty === "hard" && (
@@ -2181,7 +2184,6 @@ export default function VectorSimulator() {
                           </span>
                         </div>
                       )}
-                      <div className="text-xs text-gray-600 mt-1">Resultant = (∑Fx, ∑Fy)</div>
                     </div>
                   </TabsContent>
 
