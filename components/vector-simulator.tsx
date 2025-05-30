@@ -2189,7 +2189,7 @@ export default function VectorSimulator() {
 
                   <TabsContent value="magnitude-angle" className="mt-0">
                     <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-3">
                         <div>
                           <div className="font-medium text-blue-600 mb-1 flex items-center text-sm">
                             Magnitude:
@@ -2208,7 +2208,9 @@ export default function VectorSimulator() {
                               </Tooltip>
                             </TooltipProvider>
                           </div>
-                          <div className="text-lg">
+                          <div className="text-sm font-mono">
+                            Resultant = √((∑Fx)² + (∑Fy)²) = √(({Math.round(resultantVector.x)})² + (
+                            {Math.round(resultantVector.y)})²) ={" "}
                             <span className="vector-value">{Math.round(resultantVector.magnitude)}</span> N
                           </div>
                         </div>
@@ -2230,8 +2232,25 @@ export default function VectorSimulator() {
                               </Tooltip>
                             </TooltipProvider>
                           </div>
-                          <div className="text-lg">
-                            <span className="vector-value">{Math.round(resultantVector.angle)}</span>° from +x
+                          <div className="text-sm font-mono">
+                            tanθ = (∑Fy)/(∑Fx) = ({Math.round(resultantVector.y)})/({Math.round(resultantVector.x)}) ={" "}
+                            <span className="vector-value">
+                              {(() => {
+                                const angle = resultantVector.angle
+                                let acuteAngle
+                                if (angle >= 0 && angle <= 90) {
+                                  acuteAngle = angle
+                                } else if (angle > 90 && angle <= 180) {
+                                  acuteAngle = 180 - angle
+                                } else if (angle > 180 && angle <= 270) {
+                                  acuteAngle = angle - 180
+                                } else {
+                                  acuteAngle = 360 - angle
+                                }
+                                return Math.round(acuteAngle)
+                              })()}
+                            </span>
+                            ° from x-axis
                           </div>
                         </div>
                       </div>
