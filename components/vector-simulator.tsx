@@ -272,7 +272,7 @@ export default function VectorSimulator() {
         yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
       } else {
         // Lower half-plane (negative y)
-        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} cos ${dyRounded} N ${yDirection}`
+        yComponentFormula = `Fy = ${ySign} ${magnitudeRounded} cos ${angleFromRefRounded}° = ${dyRounded} N ${yDirection}`
       }
     }
 
@@ -938,7 +938,7 @@ export default function VectorSimulator() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Button variant="outline" size="sm" onClick={resetVectors} className="h-8">
+            <Button variant="outline" size="sm" onClick={resetVectors} className="h-8 bg-transparent">
               <Maximize2 className="w-3 h-3 mr-1" /> Reset
             </Button>
           </div>
@@ -1985,7 +1985,7 @@ export default function VectorSimulator() {
                           <Button
                             variant="outline"
                             onClick={resetPrediction}
-                            className="w-full flex items-center justify-center"
+                            className="w-full flex items-center justify-center bg-transparent"
                           >
                             <Compass className="w-4 h-4 mr-2" />
                             Make New Prediction
