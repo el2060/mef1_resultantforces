@@ -2150,7 +2150,8 @@ export default function VectorSimulator() {
 
                                 <div className="mt-2">θ = tan⁻¹(ΣFy/ΣFx)</div>
                                 <div>
-                                  = tan⁻¹({Math.round(resultantVector.y)}/{Math.round(resultantVector.x)})
+                                  = tan⁻¹({Math.abs(Math.round(resultantVector.y))}/
+                                  {Math.abs(Math.round(resultantVector.x))})
                                 </div>
                                 <div>= {Math.round(resultantVector.angle)}°</div>
                               </div>
@@ -2233,7 +2234,8 @@ export default function VectorSimulator() {
                             </TooltipProvider>
                           </div>
                           <div className="text-sm font-mono">
-                            tanθ = (∑Fy)/(∑Fx) = ({Math.round(resultantVector.y)})/({Math.round(resultantVector.x)}) ={" "}
+                            tanθ = (∑Fy)/(∑Fx) = ({Math.abs(Math.round(resultantVector.y))})/(
+                            {Math.abs(Math.round(resultantVector.x))}) ={" "}
                             <span className="vector-value">
                               {(() => {
                                 const angle = resultantVector.angle
