@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <Badge variant="outline" className="bg-mono-100 text-mono-700 border-mono-200">
-              Beta v0.8 · 2025-05-27
+              Beta v0.9 · 30 Jun  
             </Badge>
           </div>
         </div>
