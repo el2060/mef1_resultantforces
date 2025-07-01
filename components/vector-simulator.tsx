@@ -2153,7 +2153,22 @@ export default function VectorSimulator() {
                                   = tan⁻¹({Math.abs(Math.round(resultantVector.y))}/
                                   {Math.abs(Math.round(resultantVector.x))})
                                 </div>
-                                <div>= {Math.round(resultantVector.angle)}°</div>
+                                <div>
+                                  = {(() => {
+                                    const angle = resultantVector.angle
+                                    let acuteAngle
+                                    if (angle >= 0 && angle <= 90) {
+                                      acuteAngle = angle
+                                    } else if (angle > 90 && angle <= 180) {
+                                      acuteAngle = 180 - angle
+                                    } else if (angle > 180 && angle <= 270) {
+                                      acuteAngle = angle - 180
+                                    } else {
+                                      acuteAngle = 360 - angle
+                                    }
+                                    return Math.round(acuteAngle)
+                                  })()}°
+                                </div>
                               </div>
                             </div>
                           )}
