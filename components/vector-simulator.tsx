@@ -178,6 +178,7 @@ export default function VectorSimulator() {
   // Ref for tracking if vectors have been moved
   const vectorsMovedRef = useRef(false)
   const canvasRef = useRef<HTMLDivElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Calculate resultant vector
@@ -529,80 +530,95 @@ export default function VectorSimulator() {
     setActiveVectorId(vectorId)
   }
 
-  // Handle mouse move
-  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (isDragging && draggedPoint) {
-      const svgRect = e.currentTarget.getBoundingClientRect()
-      const mouseX = e.clientX - svgRect.left
-      const mouseY = e.clientY - svgRect.top
+  // Handle global mouse move and up events
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!svgRef.current) return
 
-      setVectors((prevVectors) => {
-        return prevVectors.map((vector) => {
-          if (vector.id === draggedPoint.vectorId) {
-            if (draggedPoint.isAngleLabel) {
-              // Calculate the distance from the start point to the mouse position
-              const dx = mouseX - vector.startX
-              const dy = mouseY - vector.startY
-              const distance = Math.sqrt(dx * dx + dy * dy)
+      if (isDragging && draggedPoint) {
+        const svgRect = svgRef.current.getBoundingClientRect()
+        const mouseX = e.clientX - svgRect.left
+        const mouseY = e.clientY - svgRect.top
 
-              // Calculate the angle of the mouse position relative to the start point
-              const angle = Math.atan2(dy, dx)
+        setVectors((prevVectors) => {
+          return prevVectors.map((vector) => {
+            if (vector.id === draggedPoint.vectorId) {
+              if (draggedPoint.isAngleLabel) {
+                // Calculate the distance from the start point to the mouse position
+                const dx = mouseX - vector.startX
+                const dy = mouseY - vector.startY
+                const distance = Math.sqrt(dx * dx + dy * dy)
 
-              // Calculate the normalized distance (as a multiplier)
-              const normalizedDistance = distance / 20
+                // Calculate the angle of the mouse position relative to the start point
+                const angle = Math.atan2(dy, dx)
 
-              // Update the angle label distance
-              return { ...vector, angleLabelDistance: Math.max(0.5, Math.min(3.0, normalizedDistance)) }
-            } else if (draggedPoint.isEnd) {
-              return { ...vector, endX: mouseX, endY: mouseY }
-            } else {
-              // When dragging the start point, maintain the vector's direction and length
-              const dx = vector.endX - vector.startX
-              const dy = vector.endY - vector.startY
-              return { ...vector, startX: mouseX, startY: mouseY, endX: mouseX + dx, endY: mouseY + dy }
+                // Calculate the normalized distance (as a multiplier)
+                const normalizedDistance = distance / 20
+
+                // Update the angle label distance
+                return { ...vector, angleLabelDistance: Math.max(0.5, Math.min(3.0, normalizedDistance)) }
+              } else if (draggedPoint.isEnd) {
+                return { ...vector, endX: mouseX, endY: mouseY }
+              } else {
+                // When dragging the start point, maintain the vector's direction and length
+                const dx = vector.endX - vector.startX
+                const dy = vector.endY - vector.startY
+                return { ...vector, startX: mouseX, startY: mouseY, endX: mouseX + dx, endY: mouseY + dy }
+              }
             }
-          }
-          return vector
+            return vector
+          })
         })
-      })
 
-      // Update challenge progress and check completion
-      updateChallengeProgress()
-      checkChallengeCompletion()
-    } else if (draggingAngleLabel) {
-      // Handle free movement of angle labels
-      const svgRect = e.currentTarget.getBoundingClientRect()
-      const mouseX = e.clientX - svgRect.left
-      const mouseY = e.clientY - svgRect.top
+        // Update challenge progress and check completion
+        updateChallengeProgress()
+        checkChallengeCompletion()
+      } else if (draggingAngleLabel) {
+        // Handle free movement of angle labels
+        const svgRect = svgRef.current.getBoundingClientRect()
+        const mouseX = e.clientX - svgRect.left
+        const mouseY = e.clientY - svgRect.top
 
-      setVectors((prevVectors) => {
-        return prevVectors.map((vector) => {
-          if (vector.id === draggingAngleLabel.vectorId) {
-            // Set or update the custom position for the angle label
-            return {
-              ...vector,
-              angleLabelPosition: {
-                x: mouseX,
-                y: mouseY,
-              },
+        setVectors((prevVectors) => {
+          return prevVectors.map((vector) => {
+            if (vector.id === draggingAngleLabel.vectorId) {
+              // Set or update the custom position for the angle label
+              return {
+                ...vector,
+                angleLabelPosition: {
+                  x: mouseX,
+                  y: mouseY,
+                },
+              }
             }
-          }
-          return vector
+            return vector
+          })
         })
-      })
+      }
     }
-  }
 
-  // Handle mouse up
-  const handleMouseUp = () => {
-    setIsDragging(false)
-    setDraggedPoint(null)
-    setDraggingAngleLabel(null)
-    // Keep active vector ID for a short time to allow for smoother transitions
-    setTimeout(() => {
-      setActiveVectorId(null)
-    }, 500)
-  }
+    const handleGlobalMouseUp = () => {
+      if (isDragging || draggingAngleLabel) {
+        setIsDragging(false)
+        setDraggedPoint(null)
+        setDraggingAngleLabel(null)
+        // Keep active vector ID for a short time to allow for smoother transitions
+        setTimeout(() => {
+          setActiveVectorId(null)
+        }, 500)
+      }
+    }
+
+    if (isDragging || draggingAngleLabel) {
+      window.addEventListener("mousemove", handleGlobalMouseMove)
+      window.addEventListener("mouseup", handleGlobalMouseUp)
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove)
+      window.removeEventListener("mouseup", handleGlobalMouseUp)
+    }
+  }, [isDragging, draggedPoint, draggingAngleLabel])
 
   // Calculate prediction accuracy
   const calculatePredictionAccuracy = () => {
@@ -946,12 +962,10 @@ export default function VectorSimulator() {
         </div>
         <div className="relative bg-white rounded-lg overflow-hidden border border-gray-200">
           <svg
+            ref={svgRef}
             width={canvasWidth}
             height={canvasHeight}
             className="bg-white vector-canvas"
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
           >
             <defs>
               {/* Define filters for highlighting active vectors */}
