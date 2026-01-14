@@ -510,7 +510,8 @@ export default function VectorSimulator() {
   } | null>(null)
 
   // Handle mouse down on a point or angle label
-  const handleMouseDown = (vectorId: number, isEnd: boolean, isAngleLabel?: boolean) => {
+  const handleMouseDown = (e: React.MouseEvent, vectorId: number, isEnd: boolean, isAngleLabel?: boolean) => {
+    e.stopPropagation()
     setIsDragging(true)
     setDraggedPoint({ vectorId, isEnd, isAngleLabel })
     setActiveVectorId(vectorId)
@@ -1043,52 +1044,7 @@ export default function VectorSimulator() {
               </g>
             </g>
 
-            {/* Resultant vector */}
-            {resultantVector && showResultant && (
-              <g>
-                <line
-                  x1={centerX}
-                  y1={centerY}
-                  x2={centerX + resultantVector.x}
-                  y2={centerY - resultantVector.y}
-                  stroke="red"
-                  strokeWidth={3}
-                />
-                <ArrowHead
-                  x={centerX + resultantVector.x}
-                  y={centerY - resultantVector.y}
-                  angle={Math.atan2(-resultantVector.y, resultantVector.x)}
-                  color="red"
-                />
 
-                {/* Resultant magnitude label with background */}
-                <g>
-                  <rect
-                    x={centerX + resultantVector.x / 2 - 45}
-                    y={centerY - resultantVector.y / 2 - 25}
-                    width="90"
-                    height="30"
-                    rx="6"
-                    fill="white"
-                    fillOpacity="0.98"
-                    stroke="red"
-                    strokeWidth="1.5"
-                    filter="drop-shadow(0px 1px 2px rgba(0,0,0,0.05))"
-                  />
-                  <text
-                    x={centerX + resultantVector.x / 2}
-                    y={centerY - resultantVector.y / 2 - 10}
-                    fontSize="18"
-                    fill="red"
-                    fontWeight="bold"
-                    textAnchor="middle"
-                    fontFamily="var(--font-mono)"
-                  >
-                    {Math.round(resultantVector.magnitude)} N
-                  </text>
-                </g>
-              </g>
-            )}
 
             {/* Challenge target visualization */}
             {activeChallenge && (
@@ -1462,11 +1418,57 @@ export default function VectorSimulator() {
                     strokeWidth={1.5}
                     cursor="pointer"
                     filter={isActive ? "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))" : "none"}
-                    onMouseDown={() => handleMouseDown(vector.id, true)}
+                    onMouseDown={(e) => handleMouseDown(e, vector.id, true)}
                   />
                 </g>
               )
             })}
+            {/* Resultant vector - Rendered last to be on top */}
+            {resultantVector && showResultant && (
+              <g>
+                <line
+                  x1={centerX}
+                  y1={centerY}
+                  x2={centerX + resultantVector.x}
+                  y2={centerY - resultantVector.y}
+                  stroke="red"
+                  strokeWidth={3}
+                />
+                <ArrowHead
+                  x={centerX + resultantVector.x}
+                  y={centerY - resultantVector.y}
+                  angle={Math.atan2(-resultantVector.y, resultantVector.x)}
+                  color="red"
+                />
+
+                {/* Resultant magnitude label with background */}
+                <g>
+                  <rect
+                    x={centerX + resultantVector.x / 2 - 45}
+                    y={centerY - resultantVector.y / 2 - 25}
+                    width="90"
+                    height="30"
+                    rx="6"
+                    fill="white"
+                    fillOpacity="0.98"
+                    stroke="red"
+                    strokeWidth="1.5"
+                    filter="drop-shadow(0px 1px 2px rgba(0,0,0,0.05))"
+                  />
+                  <text
+                    x={centerX + resultantVector.x / 2}
+                    y={centerY - resultantVector.y / 2 - 10}
+                    fontSize="18"
+                    fill="red"
+                    fontWeight="bold"
+                    textAnchor="middle"
+                    fontFamily="var(--font-mono)"
+                  >
+                    {Math.round(resultantVector.magnitude)} N
+                  </text>
+                </g>
+              </g>
+            )}
           </svg>
         </div>
 
