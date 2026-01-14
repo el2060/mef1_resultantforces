@@ -15,6 +15,7 @@ export default function Home() {
                 width={120}
                 height={40}
                 className="h-10 w-auto"
+                style={{ width: "auto" }}
               />
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/images-9gJ5QWkBgpXZBqpInBfiq6NUFCTXzq.jpeg"
@@ -22,6 +23,7 @@ export default function Home() {
                 width={40}
                 height={40}
                 className="h-10 w-auto ml-2"
+                style={{ width: "auto" }}
               />
             </div>
             <div className="flex flex-col">
@@ -32,7 +34,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <Badge variant="outline" className="bg-mono-100 text-mono-700 border-mono-200">
-              Alpha v1.0 · 30 Jun  
+              Alpha v1.0 · 30 Jun
             </Badge>
           </div>
         </div>

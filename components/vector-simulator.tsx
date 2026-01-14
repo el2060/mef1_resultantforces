@@ -917,8 +917,8 @@ export default function VectorSimulator() {
       <Card className="p-3 flex-1 shadow-md" ref={canvasRef}>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
-            <MousePointer className="w-4 h-4 mr-1 text-red-500" />
-            <span className="text-sm font-medium">Drag red dots to change direction & magnitude</span>
+            <MousePointer className="w-5 h-5 mr-1 text-red-500" />
+            <span className="text-base font-medium">Drag red dots to change direction & magnitude</span>
           </div>
           <div className="flex items-center gap-2">
             <TooltipProvider>
@@ -929,17 +929,17 @@ export default function VectorSimulator() {
                     size="sm"
                     className="h-8 flex items-center gap-1 bg-gray-50 border-gray-300 hover:bg-gray-100"
                   >
-                    <Move className="w-3 h-3 text-gray-700" />
-                    <span className="hidden sm:inline text-gray-700 font-medium">Drag Angle Labels</span>
+                    <Move className="w-4 h-4 text-gray-700" />
+                    <span className="hidden sm:inline text-gray-700 font-medium text-base">Drag Angle Labels</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="bg-white p-2 border-gray-300 shadow-md">
-                  <p className="text-xs">Drag the labels to reposition them for better visibility</p>
+                  <p className="text-sm">Drag the labels to reposition them for better visibility</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Button variant="outline" size="sm" onClick={resetVectors} className="h-8 bg-transparent">
-              <Maximize2 className="w-3 h-3 mr-1" /> Reset
+            <Button variant="outline" size="sm" onClick={resetVectors} className="h-8 bg-transparent text-base">
+              <Maximize2 className="w-4 h-4 mr-1" /> Reset
             </Button>
           </div>
         </div>
@@ -989,7 +989,7 @@ export default function VectorSimulator() {
                 points={`${centerX + 250},${centerY} ${centerX + 245},${centerY - 3} ${centerX + 245},${centerY + 3}`}
                 fill="gray"
               />
-              <text x={centerX + 255} y={centerY + 5} fontSize="12" fill="gray" fontFamily="var(--font-mono)">
+              <text x={centerX + 255} y={centerY + 5} fontSize="16" fill="gray" fontFamily="var(--font-mono)">
                 x
               </text>
 
@@ -1007,7 +1007,7 @@ export default function VectorSimulator() {
                 points={`${centerX},${centerY - 150} ${centerX - 3},${centerY - 145} ${centerX + 3},${centerY - 145}`}
                 fill="gray"
               />
-              <text x={centerX + 5} y={centerY - 155} fontSize="12" fill="gray" fontFamily="var(--font-mono)">
+              <text x={centerX + 5} y={centerY - 155} fontSize="16" fill="gray" fontFamily="var(--font-mono)">
                 y
               </text>
 
@@ -1015,29 +1015,29 @@ export default function VectorSimulator() {
               <g transform={`translate(${canvasWidth - 100}, ${canvasHeight - 80})`}>
                 <line x1={0} y1={30} x2={50} y2={30} stroke="black" strokeWidth={1} />
                 <polygon points="50,30 45,27 45,33" fill="black" />
-                <text x={55} y={34} fontSize="12" fill="black" fontFamily="var(--font-mono)">
+                <text x={55} y={34} fontSize="16" fill="black" fontFamily="var(--font-mono)">
                   x
                 </text>
 
                 <line x1={0} y1={30} x2={0} y2={0} stroke="black" strokeWidth={1} />
                 <polygon points="0,0 -3,5 3,5" fill="black" />
-                <text x={5} y={10} fontSize="12" fill="black" fontFamily="var(--font-mono)">
+                <text x={5} y={10} fontSize="16" fill="black" fontFamily="var(--font-mono)">
                   y
                 </text>
               </g>
 
               {/* Cardinal directions legend */}
               <g transform={`translate(${centerX}, ${centerY - 180})`}>
-                <text x={0} y={-10} fontSize="12" fill="black" textAnchor="middle">
+                <text x={0} y={-10} fontSize="16" fill="black" textAnchor="middle">
                   North
                 </text>
-                <text x={120} y={0} fontSize="12" fill="black" textAnchor="middle">
+                <text x={120} y={0} fontSize="16" fill="black" textAnchor="middle">
                   East
                 </text>
-                <text x={0} y={10} fontSize="12" fill="black" textAnchor="middle">
+                <text x={0} y={10} fontSize="16" fill="black" textAnchor="middle">
                   South
                 </text>
-                <text x={-120} y={0} fontSize="12" fill="black" textAnchor="middle">
+                <text x={-120} y={0} fontSize="16" fill="black" textAnchor="middle">
                   West
                 </text>
               </g>
@@ -1064,10 +1064,10 @@ export default function VectorSimulator() {
                 {/* Resultant magnitude label with background */}
                 <g>
                   <rect
-                    x={centerX + resultantVector.x / 2 - 35}
-                    y={centerY - resultantVector.y / 2 - 22}
-                    width="70"
-                    height="24"
+                    x={centerX + resultantVector.x / 2 - 45}
+                    y={centerY - resultantVector.y / 2 - 25}
+                    width="90"
+                    height="30"
                     rx="6"
                     fill="white"
                     fillOpacity="0.98"
@@ -1078,7 +1078,7 @@ export default function VectorSimulator() {
                   <text
                     x={centerX + resultantVector.x / 2}
                     y={centerY - resultantVector.y / 2 - 10}
-                    fontSize="14"
+                    fontSize="18"
                     fill="red"
                     fontWeight="bold"
                     textAnchor="middle"
@@ -1253,16 +1253,16 @@ export default function VectorSimulator() {
                       const labelY = vector.angleLabelPosition?.y || defaultY
 
                       // Calculate width based on content
-                      const width = vector.angleReference === "x" ? 80 : 90
+                      const width = vector.angleReference === "x" ? 110 : 120
 
                       return (
                         <>
                           {/* Combined label background */}
                           <rect
                             x={labelX - width / 2}
-                            y={labelY - 20}
+                            y={labelY - 25}
                             width={width}
-                            height="40"
+                            height="50"
                             rx="6"
                             fill="white"
                             fillOpacity="0.98"
@@ -1281,8 +1281,8 @@ export default function VectorSimulator() {
                           {/* First line: Vector ID and magnitude */}
                           <text
                             x={labelX}
-                            y={labelY - 8}
-                            fontSize="12"
+                            y={labelY - 10}
+                            fontSize="16"
                             fill={vector.color}
                             textAnchor="middle"
                             dominantBaseline="middle"
@@ -1297,8 +1297,8 @@ export default function VectorSimulator() {
                           {/* Second line: Angle */}
                           <text
                             x={labelX}
-                            y={labelY + 8}
-                            fontSize="12"
+                            y={labelY + 10}
+                            fontSize="16"
                             fill={vector.color}
                             textAnchor="middle"
                             dominantBaseline="middle"
@@ -1322,7 +1322,7 @@ export default function VectorSimulator() {
                           <text
                             x={labelX + width / 2 - 10}
                             y={labelY - 20}
-                            fontSize="8"
+                            fontSize="12"
                             fill="white"
                             textAnchor="middle"
                             dominantBaseline="middle"
@@ -1342,9 +1342,9 @@ export default function VectorSimulator() {
                       {/* X component formula */}
                       <rect
                         x={vector.endX + 10}
-                        y={vector.startY - 20}
-                        width="220"
-                        height="40"
+                        y={vector.startY - 25}
+                        width="260"
+                        height="50"
                         rx="8"
                         fill="white"
                         stroke={vector.color}
@@ -1359,7 +1359,7 @@ export default function VectorSimulator() {
                       <text
                         x={vector.endX + 20}
                         y={vector.startY}
-                        fontSize="12"
+                        fontSize="16"
                         fill={vector.color}
                         dominantBaseline="middle"
                         fontFamily="var(--font-mono)"
@@ -1374,8 +1374,8 @@ export default function VectorSimulator() {
                       <rect
                         x={vector.endX + 10}
                         y={vector.endY + 10}
-                        width="220"
-                        height="40"
+                        width="260"
+                        height="50"
                         rx="8"
                         fill="white"
                         stroke={vector.color}
@@ -1389,8 +1389,8 @@ export default function VectorSimulator() {
                       />
                       <text
                         x={vector.endX + 20}
-                        y={vector.endY + 30}
-                        fontSize="12"
+                        y={vector.endY + 35}
+                        fontSize="16"
                         fill={vector.color}
                         dominantBaseline="middle"
                         fontFamily="var(--font-mono)"
@@ -1409,8 +1409,8 @@ export default function VectorSimulator() {
                       <rect
                         x={vector.endX + 10}
                         y={vector.endY - 30}
-                        width="240"
-                        height="80"
+                        width="300"
+                        height="100"
                         rx="8"
                         fill="white"
                         stroke={vector.color}
@@ -1425,7 +1425,7 @@ export default function VectorSimulator() {
                       <text
                         x={vector.endX + 20}
                         y={vector.endY - 10}
-                        fontSize="12"
+                        fontSize="16"
                         fill={vector.color}
                         fontFamily="var(--font-mono)"
                         fontWeight="bold"
@@ -1433,10 +1433,10 @@ export default function VectorSimulator() {
                         <tspan x={vector.endX + 20} dy="0">
                           Components of F{vector.id},
                         </tspan>
-                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal" fill={vector.color}>
+                        <tspan x={vector.endX + 20} dy="26" fontWeight="normal" fill={vector.color}>
                           {component?.xComponentFormula || ""}
                         </tspan>
-                        <tspan x={vector.endX + 20} dy="22" fontWeight="normal" fill={vector.color}>
+                        <tspan x={vector.endX + 20} dy="26" fontWeight="normal" fill={vector.color}>
                           {component?.yComponentFormula || ""}
                         </tspan>
                       </text>
@@ -1485,9 +1485,9 @@ export default function VectorSimulator() {
               id="show-resultant"
               checked={showResultant}
               onChange={() => setShowResultant(!showResultant)}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-5 w-5"
             />
-            <label htmlFor="show-resultant" className="text-xs text-gray-700">
+            <label htmlFor="show-resultant" className="text-base text-gray-700">
               Show resultant force arrow
             </label>
           </div>
@@ -1495,23 +1495,23 @@ export default function VectorSimulator() {
             variant="outline"
             size="sm"
             onClick={() => setShowComponentFormulas(!showComponentFormulas)}
-            className="text-xs h-7"
+            className="text-base h-8"
           >
             {showComponentFormulas ? "Hide Formulas" : "Show Component Formulas"}
           </Button>
         </div>
 
-        <div className="mt-2 bg-yellow-50 p-2 rounded-md border border-yellow-200 text-xs">
+        <div className="mt-2 bg-yellow-50 p-2 rounded-md border border-yellow-200 text-sm">
           <div className="flex items-center">
-            <HelpCircle className="w-3 h-3 mr-1 text-yellow-500" />
+            <HelpCircle className="w-4 h-4 mr-1 text-yellow-500" />
             <span className="text-yellow-800 font-medium">Reminder:</span>
           </div>
           <p className="text-yellow-800">Set your calculator to degree mode for this module.</p>
         </div>
 
-        <div className="mt-2 bg-blue-50 p-2 rounded-md border border-blue-200 text-xs">
+        <div className="mt-2 bg-blue-50 p-2 rounded-md border border-blue-200 text-sm">
           <div className="flex items-center">
-            <Compass className="w-3 h-3 mr-1 text-blue-500" />
+            <Compass className="w-4 h-4 mr-1 text-blue-500" />
             <span className="text-blue-800 font-medium">Sign Convention:</span>
           </div>
           <p className="text-blue-800">
@@ -1519,9 +1519,9 @@ export default function VectorSimulator() {
             negative (-Fx).
           </p>
         </div>
-        <div className="mt-2 bg-purple-50 p-2 rounded-md border border-purple-200 text-xs">
+        <div className="mt-2 bg-purple-50 p-2 rounded-md border border-purple-200 text-sm">
           <div className="flex items-center">
-            <Info className="w-3 h-3 mr-1 text-purple-500" />
+            <Info className="w-4 h-4 mr-1 text-purple-500" />
             <span className="text-purple-800 font-medium">Changing Angle Reference:</span>
           </div>
           <p className="text-purple-800">
@@ -1545,9 +1545,9 @@ export default function VectorSimulator() {
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
                 <div className="flex items-center text-amber-700">
                   <Target className="w-4 h-4 mr-2" />
-                  <span className="font-semibold">Challenges</span>
+                  <span className="font-semibold text-lg">Challenges</span>
                   {completedChallengesCount > 0 && (
-                    <Badge className="ml-2 bg-green-100 text-green-800 border-green-200">
+                    <Badge className="ml-2 bg-green-100 text-green-800 border-green-200 text-sm">
                       {completedChallengesCount}/{challenges.length}
                     </Badge>
                   )}
@@ -1559,20 +1559,20 @@ export default function VectorSimulator() {
                   <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4 relative">
                     <div className="flex items-center mb-2">
                       <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
-                      <h3 className="font-medium text-blue-700">Challenge Objective</h3>
+                      <h3 className="font-medium text-blue-700 text-base">Challenge Objective</h3>
                     </div>
-                    <p className="text-sm text-blue-700 mb-3">
+                    <p className="text-base text-blue-700 mb-3">
                       {challenges.find((c) => c.id === activeChallenge)?.objective}
                     </p>
                     <div className="flex items-center mb-2">
                       <Lightbulb className="w-5 h-5 mr-2 text-blue-600" />
-                      <h3 className="font-medium text-blue-700">Learning Outcome</h3>
+                      <h3 className="font-medium text-blue-700 text-base">Learning Outcome</h3>
                     </div>
-                    <p className="text-sm text-blue-700 mb-3">
+                    <p className="text-base text-blue-700 mb-3">
                       {challenges.find((c) => c.id === activeChallenge)?.learningOutcome}
                     </p>
                     <div className="flex justify-end">
-                      <Button size="sm" onClick={() => setShowChallengeIntro(false)}>
+                      <Button size="sm" onClick={() => setShowChallengeIntro(false)} className="text-sm">
                         Start Challenge
                       </Button>
                     </div>
@@ -1601,8 +1601,8 @@ export default function VectorSimulator() {
                 {showRealWorldExample && activeChallenge && (
                   <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-3">
                     <div className="flex items-center mb-1">
-                      <Globe className="w-4 h-4 mr-2 text-amber-600" />
-                      <h3 className="font-medium text-amber-700">Real-World Application</h3>
+                      <Globe className="w-5 h-5 mr-2 text-amber-600" />
+                      <h3 className="font-medium text-amber-700 text-base">Real-World Application</h3>
                     </div>
                     <p className="text-sm text-amber-700">
                       {challenges.find((c) => c.id === activeChallenge)?.realWorldExample}
@@ -1630,8 +1630,8 @@ export default function VectorSimulator() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center">
-                        <Trophy className="w-4 h-4 mr-2 text-amber-600" />
-                        <span className="font-medium text-amber-700">Complete challenges to learn</span>
+                        <Trophy className="w-5 h-5 mr-2 text-amber-600" />
+                        <span className="font-medium text-amber-700 text-base">Complete challenges to learn</span>
                       </div>
                       <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
                         {completedChallengesCount}/{challenges.length} done
@@ -1641,11 +1641,10 @@ export default function VectorSimulator() {
                     {challenges.map((challenge) => (
                       <div
                         key={challenge.id}
-                        className={`p-3 rounded-md border transition-all ${
-                          challenge.completed
-                            ? "bg-green-50 border-green-200"
-                            : "bg-white border-amber-100 hover:border-amber-300"
-                        }`}
+                        className={`p-3 rounded-md border transition-all ${challenge.completed
+                          ? "bg-green-50 border-green-200"
+                          : "bg-white border-amber-100 hover:border-amber-300"
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
@@ -1674,15 +1673,14 @@ export default function VectorSimulator() {
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-gray-600 mb-2">{challenge.objective}</p>
+                        <p className="text-sm text-gray-600 mb-2">{challenge.objective}</p>
                         <div className="flex justify-end">
                           <Button
                             variant={challenge.completed ? "outline" : "default"}
                             size="sm"
                             onClick={() => startChallenge(challenge.id)}
-                            className={`h-7 px-3 text-xs ${
-                              challenge.completed ? "text-green-700 border-green-300" : ""
-                            }`}
+                            className={`h-7 px-3 text-xs ${challenge.completed ? "text-green-700 border-green-300" : ""
+                              }`}
                           >
                             {challenge.completed ? (
                               <>
@@ -1702,10 +1700,10 @@ export default function VectorSimulator() {
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <h3 className="font-medium text-gray-800">
+                        <h3 className="font-medium text-gray-800 text-base">
                           {challenges.find((c) => c.id === activeChallenge)?.description}
                         </h3>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-sm text-gray-600">
                           {challenges.find((c) => c.id === activeChallenge)?.objective}
                         </p>
                       </div>
@@ -1729,17 +1727,17 @@ export default function VectorSimulator() {
                     {/* Challenge timer */}
                     <div className="flex items-center justify-between mb-3 bg-gray-50 p-2 rounded-md">
                       <div className="flex items-center">
-                        <Clock className="w-4 h-4 mr-1 text-gray-600" />
-                        <span className="text-sm text-gray-700">Time:</span>
+                        <Clock className="w-5 h-5 mr-1 text-gray-600" />
+                        <span className="text-base text-gray-700">Time:</span>
                       </div>
-                      <span className="font-mono text-sm font-medium">{formatTime(challengeTimer)}</span>
+                      <span className="font-mono text-base font-medium">{formatTime(challengeTimer)}</span>
                     </div>
 
                     {/* Progress bar */}
                     <div className="mb-3">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-gray-600">Progress</span>
-                        <span className="text-xs font-medium">{challengeProgress[activeChallenge] || 0}% complete</span>
+                        <span className="text-sm text-gray-600">Progress</span>
+                        <span className="text-sm font-medium">{challengeProgress[activeChallenge] || 0}% complete</span>
                       </div>
                       <Progress value={challengeProgress[activeChallenge] || 0} className="h-2" />
                     </div>
@@ -1758,10 +1756,10 @@ export default function VectorSimulator() {
                       ) : (
                         <div className="bg-blue-50 p-2 rounded-md border border-blue-100">
                           <div className="flex items-center mb-1">
-                            <Lightbulb className="w-4 h-4 mr-1 text-blue-600" />
-                            <span className="text-sm font-medium text-blue-700">Hint:</span>
+                            <Lightbulb className="w-5 h-5 mr-1 text-blue-600" />
+                            <span className="text-base font-medium text-blue-700">Hint:</span>
                           </div>
-                          <p className="text-xs text-blue-700">
+                          <p className="text-sm text-blue-700">
                             {challenges.find((c) => c.id === activeChallenge)?.hint}
                           </p>
                         </div>
@@ -1793,8 +1791,8 @@ export default function VectorSimulator() {
             <AccordionItem value="prediction" className="border-b-0">
               <AccordionTrigger className="px-4 py-3 hover:no-underline">
                 <div className="flex items-center text-blue-700">
-                  <Brain className="w-4 h-4 mr-2" />
-                  <span className="font-semibold">Make a Prediction</span>
+                  <Brain className="w-5 h-5 mr-2" />
+                  <span className="font-semibold text-lg">Make a Prediction</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4">
@@ -1804,33 +1802,31 @@ export default function VectorSimulator() {
                       <div className="space-y-4">
                         <div className="bg-blue-50 p-3 rounded-md border border-blue-100 mb-4">
                           <div className="flex items-center mb-1">
-                            <Compass className="w-4 h-4 mr-1 text-blue-600" />
-                            <h3 className="text-sm font-medium text-blue-700">Direction Prediction</h3>
+                            <Compass className="w-5 h-5 mr-1 text-blue-600" />
+                            <h3 className="text-base font-medium text-blue-700">Direction Prediction</h3>
                           </div>
-                          <p className="text-xs text-blue-600 mb-2">
+                          <p className="text-sm text-blue-600 mb-2">
                             Based on the vectors, which direction will the resultant point?
                           </p>
                           <div className="grid grid-cols-2 gap-2">
                             {["NE", "SE", "SW", "NW", "Not sure"].map((direction) => (
                               <div
                                 key={direction}
-                                className={`flex items-center p-2 rounded-md border cursor-pointer transition-colors ${
-                                  directionPrediction === direction
-                                    ? "bg-blue-100 border-blue-300"
-                                    : "bg-white border-gray-200 hover:bg-blue-50"
-                                }`}
+                                className={`flex items-center p-2 rounded-md border cursor-pointer transition-colors ${directionPrediction === direction
+                                  ? "bg-blue-100 border-blue-300"
+                                  : "bg-white border-gray-200 hover:bg-blue-50"
+                                  }`}
                                 onClick={() => setDirectionPrediction(direction as DirectionQuadrant)}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${
-                                    directionPrediction === direction ? "bg-blue-500" : "bg-gray-200"
-                                  }`}
+                                  className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${directionPrediction === direction ? "bg-blue-500" : "bg-gray-200"
+                                    }`}
                                 >
                                   {directionPrediction === direction && (
                                     <div className="w-2 h-2 rounded-full bg-white"></div>
                                   )}
                                 </div>
-                                <span className="text-sm">{direction}</span>
+                                <span className="text-base">{direction}</span>
                               </div>
                             ))}
                           </div>
@@ -1838,25 +1834,23 @@ export default function VectorSimulator() {
 
                         <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
                           <div className="flex items-center mb-1">
-                            <Ruler className="w-4 h-4 mr-1 text-blue-600" />
-                            <h3 className="text-sm font-medium text-blue-700">Magnitude Prediction</h3>
+                            <Ruler className="w-5 h-5 mr-1 text-blue-600" />
+                            <h3 className="text-base font-medium text-blue-700">Magnitude Prediction</h3>
                           </div>
-                          <p className="text-xs text-blue-600 mb-2">Estimate the strength of the resultant force:</p>
+                          <p className="text-sm text-blue-600 mb-2">Estimate the strength of the resultant force:</p>
                           <div className="space-y-2">
                             {["< 50 N", "50-100 N", "100-150 N", "> 150 N", "Not sure"].map((range) => (
                               <div
                                 key={range}
-                                className={`flex items-center p-2 rounded-md border cursor-pointer transition-colors ${
-                                  magnitudePrediction === range
-                                    ? "bg-blue-100 border-blue-300"
-                                    : "bg-white border-gray-200 hover:bg-blue-50"
-                                }`}
+                                className={`flex items-center p-2 rounded-md border cursor-pointer transition-colors ${magnitudePrediction === range
+                                  ? "bg-blue-100 border-blue-300"
+                                  : "bg-white border-gray-200 hover:bg-blue-50"
+                                  }`}
                                 onClick={() => setMagnitudePrediction(range as MagnitudeRange)}
                               >
                                 <div
-                                  className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${
-                                    magnitudePrediction === range ? "bg-blue-500" : "bg-gray-200"
-                                  }`}
+                                  className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${magnitudePrediction === range ? "bg-blue-500" : "bg-gray-200"
+                                    }`}
                                 >
                                   {magnitudePrediction === range && (
                                     <div className="w-2 h-2 rounded-full bg-white"></div>
@@ -1879,26 +1873,24 @@ export default function VectorSimulator() {
                     ) : (
                       <div className="space-y-4">
                         <div
-                          className={`p-4 rounded-md ${
-                            predictionAccuracy === "high"
-                              ? "bg-green-50 border border-green-200"
-                              : predictionAccuracy === "medium"
-                                ? "bg-amber-50 border border-amber-200"
-                                : "bg-red-50 border border-red-200"
-                          }`}
+                          className={`p-4 rounded-md ${predictionAccuracy === "high"
+                            ? "bg-green-50 border border-green-200"
+                            : predictionAccuracy === "medium"
+                              ? "bg-amber-50 border border-amber-200"
+                              : "bg-red-50 border border-red-200"
+                            }`}
                         >
                           <div className="flex items-center mb-2">
                             {predictionAccuracy === "high" && <ThumbsUp className="w-5 h-5 mr-2 text-green-600" />}
                             {predictionAccuracy === "medium" && <AlertCircle className="w-5 h-5 mr-2 text-amber-600" />}
                             {predictionAccuracy === "low" && <AlertCircle className="w-5 h-5 mr-2 text-red-600" />}
                             <h3
-                              className={`font-medium ${
-                                predictionAccuracy === "high"
-                                  ? "text-green-700"
-                                  : predictionAccuracy === "medium"
-                                    ? "text-amber-700"
-                                    : "text-red-700"
-                              }`}
+                              className={`font-medium ${predictionAccuracy === "high"
+                                ? "text-green-700"
+                                : predictionAccuracy === "medium"
+                                  ? "text-amber-700"
+                                  : "text-red-700"
+                                }`}
                             >
                               {predictionAccuracy === "high"
                                 ? "Excellent Prediction!"
@@ -1924,11 +1916,10 @@ export default function VectorSimulator() {
                               <span className="text-sm mr-2">Direction:</span>
                               <Badge
                                 variant={directionPrediction === "Not sure" ? "outline" : "default"}
-                                className={`${
-                                  getDirectionFeedback().includes("Good prediction")
-                                    ? "bg-green-100 text-green-800 border-green-200"
-                                    : "bg-gray-100 text-gray-800 border-gray-200"
-                                }`}
+                                className={`${getDirectionFeedback().includes("Good prediction")
+                                  ? "bg-green-100 text-green-800 border-green-200"
+                                  : "bg-gray-100 text-gray-800 border-gray-200"
+                                  }`}
                               >
                                 {directionPrediction}
                               </Badge>
@@ -1937,11 +1928,10 @@ export default function VectorSimulator() {
                               <span className="text-sm mr-2">Magnitude:</span>
                               <Badge
                                 variant={magnitudePrediction === "Not sure" ? "outline" : "default"}
-                                className={`${
-                                  getMagnitudeFeedback().includes("Good estimation")
-                                    ? "bg-green-100 text-green-800 border-green-200"
-                                    : "bg-gray-100 text-gray-800 border-gray-200"
-                                }`}
+                                className={`${getMagnitudeFeedback().includes("Good estimation")
+                                  ? "bg-green-100 text-green-800 border-green-200"
+                                  : "bg-gray-100 text-gray-800 border-gray-200"
+                                  }`}
                               >
                                 {magnitudePrediction}
                               </Badge>
@@ -1950,16 +1940,14 @@ export default function VectorSimulator() {
 
                           <div className="space-y-2 text-sm">
                             <p
-                              className={`${
-                                getDirectionFeedback().includes("Good prediction") ? "text-green-700" : "text-gray-700"
-                              }`}
+                              className={`${getDirectionFeedback().includes("Good prediction") ? "text-green-700" : "text-gray-700"
+                                }`}
                             >
                               {getDirectionFeedback()}
                             </p>
                             <p
-                              className={`${
-                                getMagnitudeFeedback().includes("Good estimation") ? "text-green-700" : "text-gray-700"
-                              }`}
+                              className={`${getMagnitudeFeedback().includes("Good estimation") ? "text-green-700" : "text-gray-700"
+                                }`}
                             >
                               {getMagnitudeFeedback()}
                             </p>
@@ -2002,8 +1990,8 @@ export default function VectorSimulator() {
             <AccordionItem value="analysis" className="border-b-0">
               <AccordionTrigger className="px-4 py-3 hover:no-underline" defaultOpen={true}>
                 <div className="flex items-center text-green-700">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  <span className="font-semibold">Vector Analysis</span>
+                  <BarChart3 className="w-5 h-5 mr-2" />
+                  <span className="font-semibold text-lg">Vector Analysis</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4">
@@ -2016,7 +2004,7 @@ export default function VectorSimulator() {
                   <TabsContent value="vector-form" className="mt-0">
                     <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
                       <div className="flex items-center justify-between mb-2">
-                        <div className="font-medium text-blue-600 text-sm">Vector Components:</div>
+                        <div className="font-medium text-blue-600 text-base">Vector Components:</div>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -2039,13 +2027,13 @@ export default function VectorSimulator() {
                         <div className="space-y-3">
                           <div>
                             <div
-                              className="font-medium text-blue-600 mb-1 cursor-pointer flex items-center text-sm"
+                              className="font-medium text-blue-600 mb-1 cursor-pointer flex items-center text-base"
                               onMouseEnter={() => setHighlightedComponent("x")}
                               onMouseLeave={() => setHighlightedComponent(null)}
                             >
-                              Step 1: Sum of x-components (ΣFx) <ArrowRight className="h-3 w-3 ml-1" />
+                              Step 1: Sum of x-components (ΣFx) <ArrowRight className="h-4 w-4 ml-1" />
                             </div>
-                            <div className="pl-3 text-xs space-y-1">
+                            <div className="pl-3 text-sm space-y-1">
                               {vectorComponents.map((comp) => (
                                 <div key={comp.id} className="flex items-center">
                                   {/* Replace the green and red dots in the x-components section with the actual vector colors */}
@@ -2071,13 +2059,13 @@ export default function VectorSimulator() {
 
                           <div>
                             <div
-                              className="font-medium text-blue-600 mb-1 cursor-pointer flex items-center text-sm"
+                              className="font-medium text-blue-600 mb-1 cursor-pointer flex items-center text-base"
                               onMouseEnter={() => setHighlightedComponent("y")}
                               onMouseLeave={() => setHighlightedComponent(null)}
                             >
-                              Step 2: Sum of y-components (ΣFy) <ArrowUp className="h-3 w-3 ml-1" />
+                              Step 2: Sum of y-components (ΣFy) <ArrowUp className="h-4 w-4 ml-1" />
                             </div>
-                            <div className="pl-3 text-xs space-y-1">
+                            <div className="pl-3 text-sm space-y-1">
                               {vectorComponents.map((comp) => (
                                 <div key={comp.id} className="flex items-center">
                                   {/* Similarly, replace the green and red dots in the y-components section */}
@@ -2105,13 +2093,13 @@ export default function VectorSimulator() {
                             variant="outline"
                             size="sm"
                             onClick={() => setShowDetailedCalculations(!showDetailedCalculations)}
-                            className="w-full mt-2 text-xs"
+                            className="w-full mt-2 text-sm"
                           >
                             {showDetailedCalculations ? "Hide Detailed Calculations" : "Show Detailed Calculations"}
                           </Button>
 
                           {showDetailedCalculations && (
-                            <div className="mt-2 bg-white p-3 rounded border border-blue-100 text-xs">
+                            <div className="mt-2 bg-white p-3 rounded border border-blue-100 text-sm">
                               <div className="font-medium mb-1">Detailed Calculation:</div>
                               <div className="space-y-1 font-mono">
                                 <div>
@@ -2173,7 +2161,7 @@ export default function VectorSimulator() {
                             </div>
                           )}
 
-                          <div className="font-medium pt-2 border-t border-gray-200 text-sm">
+                          <div className="font-medium pt-2 border-t border-gray-200 text-base">
                             Total: (ΣFx, ΣFy) = (
                             <span className="vector-value">
                               {Math.abs(resultantVector.x) < 0.1 ? "0" : Math.round(resultantVector.x)}
@@ -2207,7 +2195,7 @@ export default function VectorSimulator() {
                     <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
                       <div className="space-y-3">
                         <div>
-                          <div className="font-medium text-blue-600 mb-1 flex items-center text-sm">
+                          <div className="font-medium text-blue-600 mb-1 flex items-center text-base">
                             Magnitude:
                             <TooltipProvider>
                               <Tooltip>
@@ -2217,21 +2205,21 @@ export default function VectorSimulator() {
                                   </Button>
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
-                                  <p className="text-xs">
+                                  <p className="text-sm">
                                     The Pythagorean theorem is used to find the magnitude: √(Fx² + Fy²)
                                   </p>
                                 </TooltipContent>
                               </Tooltip>
                             </TooltipProvider>
                           </div>
-                          <div className="text-sm font-mono">
+                          <div className="text-base font-mono">
                             Resultant = √((∑Fx)² + (∑Fy)²) = √(({Math.round(resultantVector.x)})² + (
                             {Math.round(resultantVector.y)})²) ={" "}
                             <span className="vector-value">{Math.round(resultantVector.magnitude)}</span> N
                           </div>
                         </div>
                         <div>
-                          <div className="font-medium text-blue-600 mb-1 flex items-center text-sm">
+                          <div className="font-medium text-blue-600 mb-1 flex items-center text-base">
                             Angle:
                             <TooltipProvider>
                               <Tooltip>
@@ -2241,14 +2229,14 @@ export default function VectorSimulator() {
                                   </Button>
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
-                                  <p className="text-xs">
+                                  <p className="text-sm">
                                     The arctangent (tan⁻¹) of Fy/Fx gives the angle relative to the positive x-axis.
                                   </p>
                                 </TooltipContent>
                               </Tooltip>
                             </TooltipProvider>
                           </div>
-                          <div className="text-sm font-mono">
+                          <div className="text-base font-mono">
                             tanθ = (∑Fy)/(∑Fx) = ({Math.abs(Math.round(resultantVector.y))})/(
                             {Math.abs(Math.round(resultantVector.x))}) ={" "}
                             <span className="vector-value">
