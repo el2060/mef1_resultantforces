@@ -1,3 +1,5 @@
+const isScorm = process.env.BUILD_MODE === 'scorm'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -9,8 +11,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: 'export',
-  assetPrefix: '.',
+  ...(isScorm ? {
+    output: 'export',
+    assetPrefix: '.',
+  } : {}),
 }
 
 export default nextConfig
